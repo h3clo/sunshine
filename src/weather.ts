@@ -1,3 +1,4 @@
+import { t } from './i18n'
 import type { City } from './cities'
 
 export interface Weather {
@@ -45,24 +46,24 @@ export async function fetchWeather(city: City): Promise<Weather> {
 }
 
 export function describeWeather(code: number, isDay: boolean): string {
-  if (code === 0) return isDay ? '☀️ 맑음' : '🌙 맑음'
-  if (code === 1) return '🌤️ 대체로 맑음'
-  if (code === 2) return '⛅ 구름 조금'
-  if (code === 3) return '☁️ 흐림'
-  if ([45, 48].includes(code)) return '🌫️ 안개'
-  if ([51, 53, 55, 56, 57].includes(code)) return '🌦️ 이슬비'
-  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return '🌧️ 비'
-  if ([71, 73, 75, 77, 85, 86].includes(code)) return '🌨️ 눈'
-  if ([95, 96, 99].includes(code)) return '⛈️ 뇌우'
-  return '날씨 정보 없음'
+  if (code === 0) return isDay ? t('☀️ 맑음', '☀️ Clear') : t('🌙 맑음', '🌙 Clear')
+  if (code === 1) return t('🌤️ 대체로 맑음', '🌤️ Mostly clear')
+  if (code === 2) return t('⛅ 구름 조금', '⛅ Partly cloudy')
+  if (code === 3) return t('☁️ 흐림', '☁️ Overcast')
+  if ([45, 48].includes(code)) return t('🌫️ 안개', '🌫️ Fog')
+  if ([51, 53, 55, 56, 57].includes(code)) return t('🌦️ 이슬비', '🌦️ Drizzle')
+  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return t('🌧️ 비', '🌧️ Rain')
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return t('🌨️ 눈', '🌨️ Snow')
+  if ([95, 96, 99].includes(code)) return t('⛈️ 뇌우', '⛈️ Thunderstorm')
+  return t('날씨 정보 없음', 'Weather unavailable')
 }
 
 export function daylightLabel(weather: Weather): string {
-  return weather.isDay ? '☀️ 낮' : '🌙 밤'
+  return weather.isDay ? t('☀️ 낮', '☀️ Day') : t('🌙 밤', '🌙 Night')
 }
 
 export function sunTime(value: string | null): string {
-  return value?.match(/T(\d{2}:\d{2})/)?.[1] ?? '정보 없음'
+  return value?.match(/T(\d{2}:\d{2})/)?.[1] ?? t('정보 없음', 'Unavailable')
 }
 
 // Daylight always takes precedence over weather, then prefer clear skies.
