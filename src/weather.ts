@@ -65,27 +65,3 @@ export function daylightLabel(weather: Weather): string {
 export function sunTime(value: string | null): string {
   return value?.match(/T(\d{2}:\d{2})/)?.[1] ?? t('정보 없음', 'Unavailable')
 }
-
-// Daylight always takes precedence over weather, then prefer clear skies.
-export function chooseDefaultCity(
-  candidates: City[],
-  getWeather: (city: City) => Weather | undefined,
-): City | undefined {
-  function rank(weather: Weather): number {
-    const clarity = weather.code >= 0 && weather.code <= 3 ? weather.code : 4
-    return (weather.isDay ? 0 : 10) + clarity
-  }
-  let best: City | undefined
-  let bestRank = Infinity
-  for (const city of candidates) {
-    if (!city.videoId) continue
-    const weather = getWeather(city)
-    if (!weather) continue
-    const score = rank(weather)
-    if (score < bestRank) {
-      best = city
-      bestRank = score
-    }
-  }
-  return best
-}
